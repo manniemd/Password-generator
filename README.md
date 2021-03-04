@@ -1,7 +1,5 @@
 # Password Generator Starter Code
 
-# Password Generator Starter Code
-
 Password Generator will help you Generate a password using javascript. 
  _____________________________________________________________________
 Visit site [Password Generator] ()
