@@ -1,85 +1,72 @@
+// Assignment Code
+const generateBtn = document.querySelector("#generate");
+const lowerChar = "abcdefghijklmnopqrstuvwxyz";
+const upperChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const numberChar = "0123456789"
 
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+function generator(length, charList) {
+  let password = "";
 
-// display value of slider when it is moved
-var slider = document.getElementById("range");
-var output = document.getElementById("number");
-output.innerHTML = slider.value;
+  for (let i = 0; i < length; i += 1) {
+    password += charList[Math.floor(Math.random() * (charList.length))];
+  }
 
-slider.oninput = function () {
-  output.innerHTML = this.value;
+  return password;
 }
 
+function generatePassword() {
+  let passwordLength;
+  let IncludeLowercase;
+  let IncludeUppercase;
+  let IncludeNumeric;
+  let charList = "";
 
+  // <8>128).
+  while (!passwordLength || passwordLength < 8 || passwordLength > 128 || Number.isNaN(passwordLength)) {
+    passwordLength = parseInt(prompt("pick a number from 8 - 128 this will be the lenght of your password"), 10);
 
-// password characters 
-const lowerAlpha = "abcdefghijklmnopqrstuvwxyz";
-const upperAlpha = lowerAlpha.toUpperCase();
-const numbers = "0123456789";
-const symbols = "!@#$%^&*(){}[]=<>/,.+";
+    if (Number.isNaN(passwordLength) && !passwordLength) {
+      alert("Please specify a number");
+    }
 
-
-// Generate password function
-var generatePassword = function () {
-
-  // gets selected character types
-  var length = slider.value;
-  const confirmLower = document.getElementById('lowercase').checked;
-  const confirmUpper = document.getElementById('uppercase').checked;
-  const confirmNumber = document.getElementById('numbers').checked;
-  const confirmSymbol = document.getElementById('special').checked;
-
-  // variable that will build the password
-  var charBuild = '';
-  var generatedPassword = '';
-
-  // counts how many character types are selected
-  var countOptions = confirmLower + confirmUpper + confirmNumber + confirmSymbol;
-
-  // if none are selected...
-  if (countOptions === 0) {
-    generatedPassword = generatedPassword + 'Please pick at least one character type!';
-    return generatedPassword;
+    if (passwordLength < 8 || passwordLength > 128) {
+      alert("sorry You can't generate a password less then 8 characters or greater than 128. please try again")
+    }
   }
 
-  if (confirmLower) {
-    charBuild = charBuild.concat(lowerAlpha);
-  }
-  if (confirmUpper) {
-    charBuild = charBuild.concat(upperAlpha);
-  }
-  if (confirmNumber) {
-    charBuild = charBuild.concat(numbers);
-  }
-  if (confirmSymbol) {
-    charBuild = charBuild.concat(symbols);
-  }
+  // choose one.
+  while (!IncludeLowercase && !IncludeUppercase && !IncludeNumeric) {
+    IncludeLowercase = confirm("Can the Password have lowercase character?");
+    IncludeUppercase = confirm("Can the Password have uppercase character?");
+    IncludeNumeric = confirm("Can the Password have number character?");
 
-  // loop through the charsBuild, which includes all character types selected and grabs a random character each time
-  for (i = 0; i < length; i++) {
-    var randomi = Math.floor(Math.random() * charBuild.length);
-    generatedPassword += charBuild[randomi];
 
+    if (!IncludeLowercase && !IncludeUppercase && !IncludeNumeric) {
+      alert("please choose an option to continue.");
+    }
+  }
+  if (IncludeLowercase) {
+    charList += lowerChar;
   }
 
-  return generatedPassword;
+  if (IncludeUppercase) {
+    charList += upperChar;
+  }
+
+  if (IncludeNumeric) {
+    charList += numberChar;
+  }
 
 
+  return generator(passwordLength, charList);
+}
 
-};
-
-
-
-
-
-// Write password to the #password input
+//  #password 
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+  const password = generatePassword();
+  const passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
